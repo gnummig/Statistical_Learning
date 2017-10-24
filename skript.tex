@@ -5,19 +5,22 @@
 \documentclass[a4paper]{article}
 \usepackage{fontspec,lipsum}
 \usepackage{amsmath,amssymb,amsthm, bm,bbm}
+\usepackage{unicode-math}
 \defaultfontfeatures{Ligatures=TeX}
 \usepackage[small,sf,bf]{titlesec}
 \usepackage{libertine}
 \usepackage{private} 
 \renewcommand*\familydefault{\sfdefault}  %% Only if the base font of the document is to be sans serif
-
+\usepackage{nicefrac}
+\usepackage{chngcntr}
 \usepackage[shortlabels]{enumitem}
 \newtheorem{satz}{Satz}[section]
 \newtheorem{axiom}{Axiom}[section]
 \newtheorem{folgerung}[satz]{Folgerung}
 \newtheorem{lemma}[satz]{Lemma}
 \theoremstyle{definition}
-\newtheorem{beispiel}{Beispiel}
+\newtheorem{beispiel}{Beispiel}%[subsection]
+\counterwithin*{beispiel}{subsection}
 \newtheorem{aufgabe}{Aufgabe}
 \newtheorem{definition}{Definition}
 \theoremstyle{remark}
@@ -135,9 +138,9 @@ $P(A_1,A_2,\cdots, A_n)= P(A_1)+P(A_2)+\cdots+ P(A_n)$,
 und es gelten folgende Eigenschaften für Wahrscheinlichkeiten:
 \begin{enumerate}[(a)]
   \item $ P(\varnothing)= 0$ 
-  \item $ P(\overline{A}= 1-P(A),\overline{A}:= \Omega -A$
+  \item $ P(\overline{A})= 1-P(A),\quad \overline{A}:= \Omega -A$
   \item $0\leq P(A)\leq 1$
-  \item Für $ A\subset B$ A ist teilmenge von B) folgt $P(A) \leq P(B)$ 
+  \item Für $ A\subset B$ (A ist teilmenge von B) folgt $P(A) \leq P(B)$ 
   \item $ P(A+B)= P(A)+P(B)-P(AB)$
   \item $ P(A_i+A_2+\cdots+A_n)\leq P(A_1)+P(A_2)+\cdots+P(A_n)$
 \end{enumerate}
@@ -154,7 +157,10 @@ und es gelten folgende Eigenschaften für Wahrscheinlichkeiten:
 \end{equation} 
 \begin{beispiel}
  Zwei würfel werden geworfen. Wie groß ist die Wahrscheinlichkeit, die Summe 8 zu erhalten (Ereignis $A$), falls bekannt ist, dass die summe grade ist (Ereignis $B$)
-\\$P(A)=5/36 \quad P(B)=1/2, \quad P(AB)=5/36, P(A|B)=\frac{P(AB)}{P(B)}=5/18$
+\begin{equation*}
+ P(A)=5/36 \quad P(B)=1/2, \quad P(AB)=5/36,\quad P(A|B)=\frac{P(AB)}{P(B)}=5/18
+\end{equation*}
+ 
 \end{beispiel}
 \subsubsection{Bayes'sche Formel}
 \label{ssub:bayes_sche_formel}
@@ -164,7 +170,7 @@ Seien $A_1,A_2,\dots,A_n$ unvereinbar, So kann man die bedingte Wahrscheinlichke
   P(A_i|B)=\frac{P(B|A_i)P(A_i)}{\sum_{j=1}^n P(B|A_j)P(A_j)}
 \end{equation} 
 mit $ \bigcup B_i=\Omega $
-\textit{das wurde nachträglich eingefügt}
+\textit{(das wurde nachträglich eingefügt)}
 
 %ssub 1.2.6 
 \subsubsection{Diagnostische Verfahren - Anwendung von bedingter Wahrscheinlichkeit}
@@ -180,9 +186,9 @@ So bezeichnet man $P(D^+)$ als die Prävalenz (Wahrscheinlichhkeit krank zu sein
 
 qualitative beschreibung aus Gnedenko:\\
 \texttt{'eine Zufallsgröße, (auch Zufallsvaiable) ist eine Größe, deren Wert vom Zufall abhängen, und für die eine Wahrscheinlichkeitsverteilungsfunktion existiert'\\}
-Jedem Elemetarereignis, $\omega \in \Omega $ (unnzerteilbar) wird eine reele Zahl zugeordnet:\\
+Jedem Elemetarereignis (unzerteilbar) $\omega \in \Omega $,  wird eine reele Zahl zugeordnet:\\
 $X=X(\omega ):\Omega  \rightarrow \mathbbm{R}.$\\
-$F_x(t):= P(X<t)$ wird als Verteilungsfunktion der Zufallsgröße $x$ definiert. Sie ist monoton nicht fallend, linksseitig stetig und gehorcht den Bedingungen: $F(-\inf)=0\quad F(\infty)=1$
+$F_x(t):= P(X<t)$ wird als Verteilungsfunktion der Zufallsgröße $x$ definiert. Sie ist monoton nicht fallend, linksseitig stetig und gehorcht den Bedingungen: $F(-\infty)=0\quad F(\infty)=1$
 \\
 umkehrung: jede solcher funktionen lässt sich als Verteilungsfunktion einer Zufallsgröße deuten.
 \subsection{Wichtige Verteilungsfunktionen}
@@ -210,64 +216,103 @@ F(x)=
 \subsubsection*{Poisson Verteilung}
 \label{ssub:poisson_verteilung}
 \begin{equation}
-P_n= \frac{\lambda ^ne^{-\lambda }{n!}}, \lambda >0 \quad F_x(t)=\sum{k=0}{t}\frac{\lambda ^k}{k!}e^{-\lambda } t\in R, n\in N
-\end{equation}
+  \begin{split}
+  P_n&= \frac{\lambda ^ne^{-\lambda }}{n!},\quad \lambda >0 \\ F_x(t)&=\sum_{k=0}^{t}\frac{\lambda ^k}{k!}e^{-\lambda },\quad t\in \mathbbm{R}, n\in \mathbbm{N}
+  \end{split}
+\end{equation}	
 
 \subsubsection*{Normalverteilung}
 \label{ssub:normalverteilung}
 \begin{equation}
-F(x)=\Phi (x)=\frac{1}{\sigma \sqrt{2\pi}} \int_{-infty}{x}e^{\frac{-(z-a)^2}{2\sigma }}dz\quad \sigma >0
+F(x)=\Phi (x)=\frac{1}{\sigma \sqrt{2\pi}} \int_{-\infty}{x}e^{\frac{-(z-a)^2}{2\sigma }}dz\quad \sigma >0
 \end{equation}
 
- \subsection{1.5 Erwartungswer, Varianz und witere Momente}
+ \subsection{1.5 Erwartungswer, Varianz und weitere Momente}
 \label{sub:erwartungswer_varianz_und_witere_momente}
 %1.5
 
-  Erwartungswert E(X) einesr zufallsgröße. \\
-  diskret: $E(X)=\sum_i x_iP_i$\\
-  Beispiel würfel: $E(X)= 1/6\sum_i i=\frac{21}{6}=7/2$\\
-  Beispiel Binomialverteilung $E(X)=  \sum_{k=0}^{n}kP_n(k)=\sum k \binom{n}{k}p^k(1-p)^{n-k}$\\
+  Erwartungswert $E(X)$ einer Zufallsgröße. \\
+  diskret:
+  \begin{equation*}
+  E(X)=\sum_i x_iP_i
+  \end{equation*}
+  \begin{beispiel}
+    Würfel\\
+    \begin{equation*}
+  E(X)= \frac{1}{6}\sum_i i=\frac{21}{6}=7/2
+    \end{equation*}
+  \end{beispiel}
+  \begin{beispiel}
+    Binomialverteilung\\
+    \begin{equation*}
+    E(X)=  \sum_{k=0}^{n}kP_n(k)=\sum k \binom{n}{k}p^k(1-p)^{n-k}
+    \end{equation*}
 (nebenrechnung missing)\\
-  $E(x)=n\sum_{k=1}^n \binom {n-1}{k-1}p^k(1-p)^{n-k}=np\sum_{k=i}^n p^{k-1}(1-p)^{n-k}$\\
+\begin{equation*}
+E(x)=n\sum_{k=1}^n \binom {n-1}{k-1}p^k(1-p)^{n-k}=np\sum_{k=i}^n p^{k-1}(1-p)^{n-k}
+\end{equation*}
   neue indizes: $k'=k-1,\quad n=n-1$\\
-  $E(X)= np   
+  \begin{equation*}
+  E(X)= np   
   \underbrace{\sum_{k'=0}^{n'} \begin{pmatrix}
   n\\k
-  \end{pmatrix}p^{k'}(1-p)^{n'-k'}}_{=1}$\\
+  \end{pmatrix}p^{k'}(1-p)^{n'-k'}}_{=1}
+  \end{equation*}
   thusly:\\
-  $E(X)=np$
+  \begin{equation*}
+  E(X)=np
+  \end{equation*}
   (die varianz braucht eine ähnliche herleitung)\\
   stetiger fall:\\
-  $E(X)= \int xp(x)dx$ wobei p(x) die Wahrscheinlichkeitsdichte ist.
-\begin{beispiel}
-  
-   wahrscheinlichkeitsverteilung auf dem intervall $[a,b]$ \\
+  \begin{equation*}
+  E(X)= \int xp(x)dx
+  \end{equation*}
+  wobei $p(x)$ die Wahrscheinlichkeitsdichte ist.
+
+  \end{beispiel}
+  \begin{beispiel}
+   Wahrscheinlichkeitsverteilung auf dem intervall $[a,b]$ \\
   \begin{equation}
-  E(X)= \frac{1}{b-a}\int_a^b xdx= \frac{1}{2(b-a)}x^2|_a^b=\frac{b^2-a^2}{2(b-a)}=1/2 (b+a)
+    E(X)= \frac{1}{b-a}\int_a^b xdx= \left[  \frac{1}{2(b-a)}x^2 \right]_a^b=\frac{b^2-a^2}{2(b-a)}=\frac{1}{2} (b+a)
   \end{equation}
 \end{beispiel}
 \begin{beispiel}
   
  Normalverteilung:\\
-
-  $E(X)= \frac{1}{\sigma \sqrt{2\pi }}\int_{-\infty}^{\infty}xe^{\frac{-(x-a^2}{2\sigma ^2}}dx$\\
+\begin{equation*}
+  E(X)= \frac{1}{\sigma \sqrt{2\pi }}\int_{-\infty}^{\infty}xe^{-\nicefrac{(x-a)^2}{2\sigma ^2}}dx
+\end{equation*}
     substitute
-    $x'=\frac{x-a}{\sigma }$ \\
-    thus
+    $x'=\frac{x-a}{\sigma }$    thus:
     \begin{equation}
-      x=\sigma x-a , \quad dx=\sigma dx
+      x=\sigma x'+a , \quad dx=\sigma dx'
     \end{equation}
     \begin{equation}
-   E(X)=1/(2\pi)\int (\sigma x'+a)e^{\frac{-x^2}{2}}dx'
+      E(X)=\frac{1}{\sqrt{2\pi}}\int (\sigma x\prime+a)e^{-\nicefrac{ { x\prime}^2}{2}}dx'
     \end{equation}
-    ungerade funktion ergibt 0\\
-    $E(X)=\frac{a}{\sqrt{s\pi}}\int e^{⁻x^2/2}dx'=a$
-  Varianz(oder Dispersion): $V(x)=E[X-E(X)]^2]i$\\
-  diskret\dots..
-  Stetig: $V(X)=\sum_i[x.E(X)]^2$ (sometnnhing might be missing.)
- $ V(X)=\int [x-E(x)]^2 p(x)dx$
+    ungerade funktion ergibt 0
+    \begin{equation*}
+    E(X)=\frac{a}{\sqrt{2\pi}}\int e^{-\nicefrac{x^2}{2}}dx'=a
+    \end{equation*}
+    \subsubsection{Varianz (auch Dispersion)}
+\label{ssub:varianz_auch_dispersion_}
+
+  \begin{equation*}
+    V(X)=E\left[  (X-E(X))^2\right] 
+  \end{equation*}
+  diskret:\\
+  \begin{equation*}
+    V(X)=\sum_i[X_i-E(X)]^2 P(X_i)
+  \end{equation*}
+  Stetig:
+  \begin{equation*}
+  V(X)=\int \left(  x-E(X)\right)^2 p(x)dx
+  \end{equation*}
  % Di HS 13 Do Hs 19 Loginf StudentSL Pwd: DateienSL
 % repetition of last seminar:
+  \subsection*{repetition of last class:}
+  \label{sub:repetition}
+  
  \begin{equation}
    iP_n(i)=npP_{n'}(i')
  \end{equation}
@@ -278,13 +323,15 @@ F(x)=\Phi (x)=\frac{1}{\sigma \sqrt{2\pi}} \int_{-infty}{x}e^{\frac{-(z-a)^2}{2\
   = \sum_{i=1}^{n}iP_n(i)=np\sum_{i'=0}^{n'}	P_{i'}=np
 \end{equation}
 \begin{equation}
-  V(x)=\sum_{i=0}^{n}(i-np)^2P_n(i)=(np)^2\overbrace{\sum_{i=0}^{n}P_n(i)}^{=1} -2np\overbrace{\sum_{i=0}^{n}iP_n(i)}^{=np} + \sum_{i=1}^{n}i^2P_n(i)
+  V(x)=\sum_{i=0}^{n}(i-np)^2P_n(i)=(np)^2\underbrace{\sum_{i=0}^{n}P_n(i)}_{=1} -2np\underbrace{\sum_{i=0}^{n}iP_n(i)}_{=np} + \sum_{i=1}^{n}i^2P_n(i)
 \end{equation}
 \begin{equation}
-  \Rightarrow \quad V(X)=\sum_{i=1}^{n}i^2P_n(i)-(np)^2 = \sum_{i=1}^{n}(i-1+1)iP_n(i)-(np)^2= np\\sum_{i'=0}^{n'}(i'+1)P_{n'}(i') -(np)^2 = np\left( \sum_{i'=0}^{n'}i'P_{n'}(i')+\sum_{i'=0}^{n'}P_{n'}(i') \right)-(np)^2
-\end{equation}
-\begin{equation}
-  = np(n'p +1) -(np)^2= np\left( (n-1)p+1\right)-(np)^2=np(1-p)
+  \begin{split}
+  \Rightarrow \quad V(X)&=\sum_{i=1}^{n}i^2P_n(i)-(np)^2 = \sum_{i=1}^{n}(i-1+1)iP_n(i)-(np)^2\\
+  &= np\sum_{i'=0}^{n'}(i'+1)P_{n'}(i') -(np)^2 \\
+  &= np\left( \sum_{i'=0}^{n'}i'P_{n'}(i')+\sum_{i'=0}^{n'}P_{n'}(i') \right)-(np)^2\\
+  &= np(n'p +1) -(np)^2= np\left( (n-1)p+1\right)-(np)^2=np(1-p)
+  \end{split}
 \end{equation}
 \end{beispiel}
  \begin{beispiel}
