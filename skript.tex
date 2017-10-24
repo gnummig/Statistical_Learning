@@ -1,0 +1,463 @@
+%        File: skript.tex
+%     Created: Tue Oct 10 09:00  2017 C
+% Last Change: Tue Oct 10 09:00  2017 C
+%
+\documentclass[a4paper]{article}
+\usepackage{fontspec,lipsum}
+\usepackage{amsmath,amssymb,amsthm, bm,bbm}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage[small,sf,bf]{titlesec}
+\usepackage{libertine}
+\usepackage{private} 
+\renewcommand*\familydefault{\sfdefault}  %% Only if the base font of the document is to be sans serif
+
+\usepackage[shortlabels]{enumitem}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{axiom}{Axiom}[section]
+\newtheorem{folgerung}[satz]{Folgerung}
+\newtheorem{lemma}[satz]{Lemma}
+\theoremstyle{definition}
+\newtheorem{beispiel}{Beispiel}
+\newtheorem{aufgabe}{Aufgabe}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+%\newtheorem*{beweis}{Beweis}
+\newtheorem*{bemerkung}{Bemerkung}
+
+%opening
+\title{Lecture script to \\Statistical learning}
+\author{\MyDetails}
+
+\begin{document}
+\maketitle
+\section{Vorbemerkungen}
+\label{sub:vorbemerkungen}
+Bei statistischem Lernen geht es darum intelligente Schlüsse aus Daten zu ziehen.\\
+Es muss aber nicht unbedingt nur um Daten gehen, wobei der fokus der Vorlesunng auf die methoden zur Analyse von Daten gelegt wird..\\
+Es wird wenig über Design von Versuchen gehen, also die Art und Konzeption der Datenerhebung zum Beispiel einer klinischen Studie etc. $\rightarrow $ hier geht es um das Werkzeug der Analyse.\\
+Es wird einige Beispiele aus Petroffs Forschung geben, also aus klinischen Studien, aber es gibt natürlich auch Anwendungen von statistischem Lernen auf ganz anderen Gebieten.\\
+\subsubsection{beispielhafte anwendungen}
+\label{ssub:beispielhafte_anwendungen}
+Die Frage ob sich Behandlungen A und B unterscheiden\\
+Was sind die Eigenschaften eines diagnostischen Tests ( siehe: bedingte Wahrscheinlichkeiten, z.B. die Frage ' wie hoch ist die Wahrscheinlichkeit das jemand tatsächlich Hepatitis A hat, wenn ein Test positiv ausfällt')\\
+oder: 'Gibt es einen Zusammenhang zwischen Krankheien A un B.'\\
+\subsection{Wahrscheinlichkeiten}
+\label{sub:wahrscheinlichkeiten}
+
+\subsubsection{Zugänge}
+\label{ssub:zugange}
+Es gibt zwei Zugänge zu Statistik, der eine behandelt relative häufigkeiten ( \textit{frequentistische Statistik}), der andere behandelt das Maß für eine Überzeugung ( \textit{Bayes'sche Statistik})\\
+
+\paragraph{frequentistisch}
+\label{par:frequentistisch}
+Basiert auf der Idee von wiederholbaren Experimenten (Münzwurf, radioaktiver Zerfall, Schwangerschaft bei Kontrazeptionsmethode A (Verhütung), 5 Jahres überleben nach einer Chemotherapie (aber was definieren wir als experiment?: Krebsstadium?, Krebsart?, Behandlungsdauer?), Wahrscheinlichkeit eines Regentages etc.).
+Wir sehen die Idee der Wiederholbarkeit ist nicht immer einfach festzustellen.\\
+in den ersten Vorlesungen folgen wir einem Traditionellen zugang, dadurch bekommt man ein solides fundament. \\
+Dieser Zugang wurde von Kolmogorow gelegt, die entsprechende Axiomatik der klassischen Theorie ist die \textit{Kolmogorow Axiomatik}.\\
+Wir werden aus zeitgründen nicht mathematisch streng sein können.\\
+
+\subsubsection{Das Ereignisfeld}
+\label{ssub:das_ereignisfeld}
+
+Als \textit{Ereignis} bezeichnet man einen möglichen ausgang eines 'Zufallsexperiments' zb: ``Zahl liegt oben''` beim Münzwurf.\\
+Ein System heißt Ereignisfeld, wenn:
+\begin{enumerate}
+  \item es das Sichere und das unmögliche Ereignis enthält
+  \item A und B Teil eines Systems sind, dann auch 
+     \begin{enumerate}[(i)]
+       \item AB  (auch $A\cap B$ geschrieben) `` \textit{Produkt}'' von A und B bedeutet gleichzeitiges auftreten von A und B
+       \item A+B ($A\cup B$) `` \textit{Summe}'', mindestenns eines der Ereignisse A und B tritt ein
+       \item A-B ($A\setminus B$) `` \textit{Differenz}'' A tritt ein, während B nicht eintritt.
+     \end{enumerate}
+\end{enumerate}
+\begin{beispiel}
+ Münzwurf-Ereignisfeld $\{A,B,\Omega , \varnothing \}$\\
+ wobei:\\
+ A - Zahl oben\\
+ B - Wappen Oben \\
+ $\Omega $ - Zahl oder Wappen oben\\
+ $\varnothing$ weder zahl noch wappen, oder auch: sowohl wappen als auch zahl, umfasst also ALLE unmöglichen Ereignisse\\
+\end{beispiel}
+\subsubsection{Gesetze der Ereignisse}
+\label{ssub:gesetze_der_ereignisse}
+
+\subsection*{Kommutativität}
+\label{sub:kommutativitat}
+\begin{equation*}
+A+B=B+A
+\end{equation*}
+\begin{equation*}
+AB=BA
+\end{equation*}
+
+\subsection*{Assoziativität}
+\label{sub:assoziativitat}
+\begin{equation*}
+(A+B)+C=A+(B+C)
+\end{equation*}
+\begin{equation*}
+(AB)C=A(BC)
+\end{equation*}
+
+\subsection*{Distributivität}
+\label{sub:distributivitat}
+\begin{equation*}
+A(B+C)=AB+AC
+\end{equation*}
+\begin{equation*}
+A+(BC)=(A+B)(A+C)
+\end{equation*}
+
+was durch die identitäten klar wird\ldots
+\subsection*{Identitäten}
+\label{sub:identitaten}
+\begin{equation*}
+A+A=A
+\end{equation*}
+\begin{equation*}
+AA=A
+\end{equation*}
+wir beweisen also das distributivgesetz wie folgt:\\
+\begin{equation*}
+(A+B)(A+C)=AA+AC+BA+BC=A+BC
+\end{equation*}
+\subsection{Wahrscheinlichkeitsbegriff}
+\label{sub:wahrscheinlichkeitsbegriff}
+\begin{axiom}
+Jedes Ereignis aus dem Ereignisfeld F ordnet man eine nichtnegative Zahl p(A) zu, die Wahrscheinlichkeit.
+\end{axiom}
+\begin{axiom}
+$P(\Omega )=1$
+\end{axiom}
+\begin{axiom}
+Sind Ereignisse $A_{i}$ unvereinbar, ie $A_iA_j=\varnothing \textrm{ für }i\neq j)$, so ist\\
+$P(A_1,A_2,\cdots, A_n)= P(A_1)+P(A_2)+\cdots+ P(A_n)$,
+und es gelten folgende Eigenschaften für Wahrscheinlichkeiten:
+\begin{enumerate}[(a)]
+  \item $ P(\varnothing)= 0$ 
+  \item $ P(\overline{A}= 1-P(A),\overline{A}:= \Omega -A$
+  \item $0\leq P(A)\leq 1$
+  \item Für $ A\subset B$ A ist teilmenge von B) folgt $P(A) \leq P(B)$ 
+  \item $ P(A+B)= P(A)+P(B)-P(AB)$
+  \item $ P(A_i+A_2+\cdots+A_n)\leq P(A_1)+P(A_2)+\cdots+P(A_n)$
+\end{enumerate}
+\end{axiom}
+  \subsubsection{Bedingte Wahrscheinlichkeiten} 
+  \label{ssub:bedingte_wahrscheinlichkeiten}
+  Die Wahrscheinichkeit von $A$ unter der  Bedingung dass $B$ eingetreten ist schreibt man $P(A|B)$
+  \begin{equation}
+    P(A|B):= \frac{P(AB)}{P(B)}
+  \end{equation} 
+  Motivation: gegeben seien $n$ unvereinbare gleichwahrscheinliche Ereignisse $A_1,A_2,\dots A_n$ mit $m$ günstig für $A$, $k$ günstig für $B$, und $r$ günstig für $AB$:
+\begin{equation}
+  P(A|B)= \frac{r}{k}=\frac{r/n}{k/n}=\frac{P(AB)}{P(A)}
+\end{equation} 
+\begin{beispiel}
+ Zwei würfel werden geworfen. Wie groß ist die Wahrscheinlichkeit, die Summe 8 zu erhalten (Ereignis $A$), falls bekannt ist, dass die summe grade ist (Ereignis $B$)
+\\$P(A)=5/36 \quad P(B)=1/2, \quad P(AB)=5/36, P(A|B)=\frac{P(AB)}{P(B)}=5/18$
+\end{beispiel}
+\subsubsection{Bayes'sche Formel}
+\label{ssub:bayes_sche_formel}
+
+Seien $A_1,A_2,\dots,A_n$ unvereinbar, So kann man die bedingte Wahrscheinlichkeit schreiben als:
+\begin{equation}
+  P(A_i|B)=\frac{P(B|A_i)P(A_i)}{\sum_{j=1}^n P(B|A_j)P(A_j)}
+\end{equation} 
+mit $ \bigcup B_i=\Omega $
+\textit{das wurde nachträglich eingefügt}
+
+%ssub 1.2.6 
+\subsubsection{Diagnostische Verfahren - Anwendung von bedingter Wahrscheinlichkeit}
+\label{ssub:diagnostische_verfahren_anwendung_von_bedingter_wahrscheinlichkeit}
+
+Es seien $D^+,D^-$ zwei Mögliche Krankheitszustände (Diseases, wobei krank $D^+$ ist) und $T^+,T^-$ 
+die zwei moglichen Ergebnisse eines diagnostischen Tests 
+(bei Tests wie einem Schwangerschaftsstest macht Binarität Sinn, bei Tests wie dem von Leberwerten, ist die Binariät(ob sinnvoll oder nicht ), durch eine Grenzziehung hergestellt.) 
+So bezeichnet man $P(D^+)$ als die Prävalenz (Wahrscheinlichhkeit krank zu sein), $P(T^+|D^+)$ die Sensitivität, sowie $P(T^-|D^-)$ als die Spezifität. $P(D^+|T^+)$ heißt der Positiv predictive value (PPV) also die Wahrscheinlichkeit das der Patient krank ist wenn der test positiv ausfällt, sowie $P(D^-|T^-)$ der negativ prediktiver wert (NPV), also die Wahrscheinlichhkeit, dass ein negativer Test tatsächlich bedeutet, dass der Patient gesund ist.\\
+  \subsection{Zufallsvariablen und Verteilungsfunktionen} % 1.3
+\label{sub:subsection_name}
+
+
+qualitative beschreibung aus Gnedenko:\\
+\texttt{'eine Zufallsgröße, (auch Zufallsvaiable) ist eine Größe, deren Wert vom Zufall abhängen, und für die eine Wahrscheinlichkeitsverteilungsfunktion existiert'\\}
+Jedem Elemetarereignis, $\omega \in \Omega $ (unnzerteilbar) wird eine reele Zahl zugeordnet:\\
+$X=X(\omega ):\Omega  \rightarrow \mathbbm{R}.$\\
+$F_x(t):= P(X<t)$ wird als Verteilungsfunktion der Zufallsgröße $x$ definiert. Sie ist monoton nicht fallend, linksseitig stetig und gehorcht den Bedingungen: $F(-\inf)=0\quad F(\infty)=1$
+\\
+umkehrung: jede solcher funktionen lässt sich als Verteilungsfunktion einer Zufallsgröße deuten.
+\subsection{Wichtige Verteilungsfunktionen}
+\label{sub:wichtige_verteilungsfunktionen}
+%1.4
+\subsubsection*{Binomialverteilung}
+\label{ssub:binomialverteilung}
+\begin{equation}
+P_n(m)= \binom{n}{m} p^mq^{n-m}
+\end{equation}
+
+ wobei $q:=1-p$\\
+\begin{equation}
+F(x)=
+\begin{cases}
+ 0 		&\textrm{ for } x\leq 0\\
+\sum_{k<x}P_k 	&\textrm{ for } 0<x\leq n\\
+1 		&\textrm{ for  } x>n
+\end{cases}
+\end{equation}
+
+
+
+
+\subsubsection*{Poisson Verteilung}
+\label{ssub:poisson_verteilung}
+\begin{equation}
+P_n= \frac{\lambda ^ne^{-\lambda }{n!}}, \lambda >0 \quad F_x(t)=\sum{k=0}{t}\frac{\lambda ^k}{k!}e^{-\lambda } t\in R, n\in N
+\end{equation}
+
+\subsubsection*{Normalverteilung}
+\label{ssub:normalverteilung}
+\begin{equation}
+F(x)=\Phi (x)=\frac{1}{\sigma \sqrt{2\pi}} \int_{-infty}{x}e^{\frac{-(z-a)^2}{2\sigma }}dz\quad \sigma >0
+\end{equation}
+
+ \subsection{1.5 Erwartungswer, Varianz und witere Momente}
+\label{sub:erwartungswer_varianz_und_witere_momente}
+%1.5
+
+  Erwartungswert E(X) einesr zufallsgröße. \\
+  diskret: $E(X)=\sum_i x_iP_i$\\
+  Beispiel würfel: $E(X)= 1/6\sum_i i=\frac{21}{6}=7/2$\\
+  Beispiel Binomialverteilung $E(X)=  \sum_{k=0}^{n}kP_n(k)=\sum k \binom{n}{k}p^k(1-p)^{n-k}$\\
+(nebenrechnung missing)\\
+  $E(x)=n\sum_{k=1}^n \binom {n-1}{k-1}p^k(1-p)^{n-k}=np\sum_{k=i}^n p^{k-1}(1-p)^{n-k}$\\
+  neue indizes: $k'=k-1,\quad n=n-1$\\
+  $E(X)= np   
+  \underbrace{\sum_{k'=0}^{n'} \begin{pmatrix}
+  n\\k
+  \end{pmatrix}p^{k'}(1-p)^{n'-k'}}_{=1}$\\
+  thusly:\\
+  $E(X)=np$
+  (die varianz braucht eine ähnliche herleitung)\\
+  stetiger fall:\\
+  $E(X)= \int xp(x)dx$ wobei p(x) die Wahrscheinlichkeitsdichte ist.
+\begin{beispiel}
+  
+   wahrscheinlichkeitsverteilung auf dem intervall $[a,b]$ \\
+  \begin{equation}
+  E(X)= \frac{1}{b-a}\int_a^b xdx= \frac{1}{2(b-a)}x^2|_a^b=\frac{b^2-a^2}{2(b-a)}=1/2 (b+a)
+  \end{equation}
+\end{beispiel}
+\begin{beispiel}
+  
+ Normalverteilung:\\
+
+  $E(X)= \frac{1}{\sigma \sqrt{2\pi }}\int_{-\infty}^{\infty}xe^{\frac{-(x-a^2}{2\sigma ^2}}dx$\\
+    substitute
+    $x'=\frac{x-a}{\sigma }$ \\
+    thus
+    \begin{equation}
+      x=\sigma x-a , \quad dx=\sigma dx
+    \end{equation}
+    \begin{equation}
+   E(X)=1/(2\pi)\int (\sigma x'+a)e^{\frac{-x^2}{2}}dx'
+    \end{equation}
+    ungerade funktion ergibt 0\\
+    $E(X)=\frac{a}{\sqrt{s\pi}}\int e^{⁻x^2/2}dx'=a$
+  Varianz(oder Dispersion): $V(x)=E[X-E(X)]^2]i$\\
+  diskret\dots..
+  Stetig: $V(X)=\sum_i[x.E(X)]^2$ (sometnnhing might be missing.)
+ $ V(X)=\int [x-E(x)]^2 p(x)dx$
+ % Di HS 13 Do Hs 19 Loginf StudentSL Pwd: DateienSL
+% repetition of last seminar:
+ \begin{equation}
+   iP_n(i)=npP_{n'}(i')
+ \end{equation}
+ \begin{equation}
+   E(X)=\sum_{i=1}^{n}iP_n(i)
+ \end{equation}
+\begin{equation}
+  = \sum_{i=1}^{n}iP_n(i)=np\sum_{i'=0}^{n'}	P_{i'}=np
+\end{equation}
+\begin{equation}
+  V(x)=\sum_{i=0}^{n}(i-np)^2P_n(i)=(np)^2\overbrace{\sum_{i=0}^{n}P_n(i)}^{=1} -2np\overbrace{\sum_{i=0}^{n}iP_n(i)}^{=np} + \sum_{i=1}^{n}i^2P_n(i)
+\end{equation}
+\begin{equation}
+  \Rightarrow \quad V(X)=\sum_{i=1}^{n}i^2P_n(i)-(np)^2 = \sum_{i=1}^{n}(i-1+1)iP_n(i)-(np)^2= np\\sum_{i'=0}^{n'}(i'+1)P_{n'}(i') -(np)^2 = np\left( \sum_{i'=0}^{n'}i'P_{n'}(i')+\sum_{i'=0}^{n'}P_{n'}(i') \right)-(np)^2
+\end{equation}
+\begin{equation}
+  = np(n'p +1) -(np)^2= np\left( (n-1)p+1\right)-(np)^2=np(1-p)
+\end{equation}
+\end{beispiel}
+ \begin{beispiel}
+   Würfel: 
+   \begin{equation}
+     V(X)= \frac{1}{6}\sum_{i=1}^{6}(i-\frac{7}{2})^2= \frac{1}{3}\sum_{i=1}^{3}(i-\frac{7}{2})^2=\frac{1}{3}\left[ (\frac{5}{2})^2 + \left( \frac{3}{2} \right)^2+\left( \frac{1}{2} \right)^2 \right]=\frac{35}{12}
+   \end{equation}
+
+ \end{beispiel} 
+\begin{equation}
+  V(X)=\int\left[ x-E(X) \right]^2p(x)dx
+\end{equation}  
+  \begin{beispiel}
+    Uniformfverteilung $[a,b]$\\
+    \begin{multline}
+V(X)= \frac{1}{b-a}\int_{a}^{b}x^2dx-\left( \frac{b+a)}{2} \right)^2 =\\
+\frac{b^3-a^3}{3(b-a)}-\frac{(b+y)^2}{4}=\\
+\frac{(b-a)(b^2+a^2+ab)}{3(b-a)}-\frac{(b-a)^2}{4}
+    \end{multline}
+  \begin{equation}
+  = \frac{1}{12}(4b^2+4a^2+4ab-4b^2-6ab-3a^2)= \frac{1}{12}(b^2+a^2-2ab)=\frac{b-a)^2}{12}
+  \end{equation}
+  \end{beispiel}
+  wir bezeichnen $m_k$ als das gewöhnliche Moment (oder auch Anfangsmoment) k-ter Ordnung
+  \begin{equation}
+    m_k:= E(X^k) \quad \textrm{ diskret also } \sum_{i}(x_i)^kp_i \quad \textrm{ und stetig: } \int x^k p(x)dx
+  \end{equation}
+  Das Zentrale moment (auf das Znetrum $E(X)$ bezogen) k'ter ordnung ist 
+  \begin{equation}
+    \mu_k:= E\left[ \left( X-m_1 \right)^k \right]
+  \end{equation}
+Die Varianz ist also das zweite Zentralmoment:
+\begin{equation}
+V(X)=\mu_2=m_2-(m_1)^2
+\end{equation}
+man kann immer $\mu_k$ durch $m_l\quad (l\leq k)$ ausdrücken
+
+\subsection{1.6 Korrelation}
+\label{sub:1_6_korrelation}
+
+Eine Erweiterung dieser momente stellt die \textit{Kovarianz} dar:
+\begin{equation}
+b(X,Y):= E\left[ \left( X-E(X) \right)\left( Y-E(Y) \right) \right]
+\end{equation}
+Sie ist das gemischte Zentralmomente zweiter Ordnung.\\
+Es gilt Offensichtlich:
+\begin{equation}
+  b(X,X)=V(X)
+\end{equation}
+
+Die normierte Größe $\rho (X,Y):= \rho _{X,Y}=\frac{b(X,Y)}{\sqrt{V(X)V(Y)}}$ bezeichnet man als Korrelationskoefffizient. Es gilt:
+$ -1\leq\rho \leq 1$. Für $X=Y$ gilt $\rho =1$ und für $X=-Y$ gilt $\rho =-1$. Falls $X$ und $Y$ unabhängig sind, dann gilt $\rho =0$ (aber nicht notwendigerweise umgekehrt, die abhängigkeit könnte nichtlienar sein, aber generelle unabhängige funktionen sind natürlich aud linear unabhängig)\\
+\paragraph{Anwendung auf Wahrscheinlichkeiten}
+\label{par:anwendung_auf_wahrscheinlichkeiten}
+\begin{equation}
+  E(X)=p_x
+\end{equation}
+\begin{equation}
+  V(X)= p_x(1-p_x)
+\end{equation}
+ \begin{equation}
+   \rho_{x,y}=\frac{p_{X,Y}-p_xp_y}{denom\sqrt{p_x(1-p_x)+p_x(111-p(y)}}
+ \end{equation}
+$\Rightarrow$
+\begin{equation}
+  p_{XY}=p_xP_y+\rho _{X,Y}\sqrt{p_x(1-p_x)p_y(1-p_y)}
+\end{equation}
+grenzfälle:
+$\rho =0$: $ p_{XY)}=P_xP_Y$\\ 
+$\rho =1$: dann $p_{XY}=(p-x^2+p_x(1-p_x)=p_x$\\
+  $  \rho =-1\quad (p_X=1-P_Y) \Rightarrow P_{XY}=P_x(1-p_x)-p_x(1-p_X)=0$
+  \subsection{1.7 Einige Wichtige Sätze der Wahrscheinlichkeitstheoorie}
+ \label{sub:1_7_einige_wichtige_satze_der_wahrscheinlichkeitstheoorie}
+ 
+\paragraph{Gesetz  der Großen Zahlen}
+\label{par:gesetz_der_grossen_zahlen}
+
+Bernoulli: Für alle $\epsilon > 0 $ 
+\begin{equation}
+  \lim_{n \rightarrow \infty}P\left\{|\frac{\mu}{n}-p|<\epsilon \right\}=1
+\end{equation}
+ wobei $\mu$ anzahl der ereignisse, $n$ anzahl der Versuche, p Wahrscheinlichkeit des Ereignisse\\
+ (streng mathematisch ist das nicht korrekt sondern bedarf erst noch einem bewies den borel wesentlich später gemacht hat, siehe literatur)\\
+ Tschepyschew:\\
+ (man kennt ihn in der informatik von den Tschebischew polynomen)\\
+für alle $\epsilon >0$ 
+\begin{equation}
+  \lim_{n\rightarrow \infty}P\left\{ |\frac{1}{n}\sum_{i=1}^{n}X_i-\frac{1}{n}\sum_{i=1}^{n}E(X_i)|<\epsilon e \right\}=1
+\end{equation}
+für eine Folge paarweise verschiedener unabhängiger Zufallsgrößen
+\begin{equation}
+  \left\{ X_i \right\}_{i=1,2,\dots,n}
+\end{equation}
+mit gleichmäßig beschränkter varianz:
+\begin{equation}
+  \forall i \quad V(X_i)\leq C
+\end{equation}
+% man betrachtet einen fall binärer einstufung zum beispiel qualität in einer fabrik, \dots wenn es um das praktische geht muss man sich fragen ob die vorraussetzungen gegeben sind
+% frage nach in welchem fall man frequentistisch (auch mathematisch bewiesen ) arbeitenn darf, sprich mittelwerte verwneden darf. historischer versuch:  sehr verdünntes gas, wenn man nicht frequentistisch sollte man keinen kontinuirlichen druck sehen, sondern viele kleine stöße, das wurde lange nicht geglaubt, ist aber tatsächlich so, aber man braucht eben ein sehr verdünntes glas
+\subsubsection{Lokaler Grenzwert von Movre Laplace}
+\label{ssub:lokaler_grenzwert_von_movre_laplace}
+
+Sei $0<p<1$ die Wahrscheilichkeit eines ereignisses, dann wissen wir: In n versuchen gilt, $P(n)= \binom{n}{m}p^m(1-p)^{n-m}$ so gilt:\\
+\begin{equation}
+\lim_{n\rightarrow \infty} \frac{\sqrt{np(1-p)}P_n(m)}{\frac{1}{2\pi}e^{-\frac{x^2}{2}}}\rightarrow 1 \quad \textrm{ mit  }x= \frac{m-np}{\sqrt{np(1-p)}}
+\end{equation}
+% in der wurzel steht die varianz
+man normiert die binomialverteilung und im grenzfall wird sie zutt normalverteilung.
+\subsubsection{Zentraler Grenzwertsatz}
+\label{ssub:zentraler_grenzwertsatz}
+
+Sei $ S_n =\sum_{i=1}^{n}X_i$ mit $ E(X_i)< \infty$, $V(X_i)=\sigma ^2 \leq \infty$\\
+so gilt für jedes t 
+\begin{equation}
+  \lim_{n\rightarrow \infty}P(\frac{S_n-nE(X_i)}{\sqrt{\pi}\sigma }<t)= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^t e^{-\frac{x^2}{2}}dx
+\end{equation}
+also die folge der verteilung der standartisierten zufallsgrößen konvergiert gegen die Standartnormalverteilung, das heißt a=0, $\sigma =1$ 
+
+\section{Deskriptive Statistik}
+\label{sec:deskriptive_statistik}
+Eine Beschreibung vun daten und Kohorten ist zentral für das Verstäändniss ener Arbeit (Veröffentlichung)\\
+% bem: man probiert etwas an einer bestimmten gruppe von patienten und möchte das ergebnis verallgeinern. es kann aber passieren das man merkt oder sich fragt ob das ergebnis tatsächlich übertragbar. beispiel: arbeit eingereicht, danach kam eine sehr renommierte arbeit, die bessere ergebnisse hatte aber auch eine höhere mortalität woraus sich die höheren werte ergeben könten, also die ergebnisse der eigenen nd der anderen ncht unbedingt vergleichbar sind.
+Ziel ist es it wenigen Kenngrößen ddas wesentliche zu charactersisieren.\\
+dazu gibt es 'punktschötzer' für erwartungswerte und Konfidenzintervalle(KI engl. CI) als maß für die genauigkeit der Schätzung.\\
+was ist ein konfidenzintervall\:
+\begin{equation}
+  (1-\alpha )\quad KI[a,b]: \quad P(a\leq\Theta\leq b = 1-\alpha 
+\end{equation}
+man will schätzen wie wahrscheinlichkeit eines erwartungswertes ist.
+\begin{beispiel}
+  wir messen die (menge) von haemoglobin bei 1 Mio menschen. dann gehe ich zum gefrierschrank und wähle 100 proben und ich messen einen wert der etwas anders ist als der bei den 1Mio, gebe eine konfidenzintervall von der zweiten messung an und mache das mit noch mehr proben , dann liegt manchmal das konfidenzmaß nicht über dem erwaartungswert.
+\end{beispiel}
+\subsection{Ein Merkmal}
+\label{sub:ein_merkmal}
+
+Nominale und Ordinale Größen
+
+zb bei einer genetischen arbeit: menschen verschiedener herkunft lassen sich nicht ordnen: kategoriale größe $ \rightarrow $  nominale größe 
+
+absolute und relative häufigkeiten. (zb Häufigkeitstabellen)\\
+meist ist es gut etwas graphisch  darzustellen: Balkendiagramme, oft mit konfidenzintervall oder standartfehler (KI und SE(standarterror))
+kreisdiagramm(in den fachzeitschriften verpönt, weil man feststellt das man falsch einschätzen kann ob etwas 20 oder 30 prozent ist, klarer im balkendiagramm.
+  % petroff bschhäftigt sich mit den kontrollgruppen und ob sie vergleichbar sind zwischen studien aus verschiedenen Ländern.
+\subsubsection{Metrische Daten}
+\label{sub:metrische_daten}
+
+Lagemaß:\\
+als Mittelwert ( arithmetsich ($ \frac{1}{n}\sum_{i=1}^{n}x_i$) oder geometrisch(dh log-Skala)($ \left[ \prod_{i=1}^{n}x_i \right]^{\frac{1}{n}}$)\\
+- übliche und 'robuste' Methoden (zb wenn ein wert stark abweicht sonst aber alles ähnlich ist, ist der mittelwert mit der log scala \\
+  - Median und andere Quantile(verschiedene Schätzverfahren) 
+\subsubsection{streumaß}
+\label{ssub:streumass}
+
+standartabweichung (``sample Method'') $ sd^2= \frac{1}{n-1}\sum_{i=1}^{n}(x_i-\overline{x})^2$\\
+mit $ \overline{x}=\frac{1}{n}\sum_{i=1}^{n}x_i$\\
+- Interquartilabstand ( enl IRQ) 25 und 75 perzentil\\
+- Spannweite( int nicht wirklich ein streumaß, wird aber oft zusätzlich verwendendet)
+graphisch : Histogramm, Boxplot
+% praphic simplebox.gif 
+\subsection{Zusammenhang Zweier Merkmale}
+\label{sub:zusammenhang_zweier_merkmale}
+
+bei nominalen Größen arbeitet man oft mit Kontingenztafel: odds ration, relatives risiko. Graphisch auch: forest plots
+bei metrischen grüßen: Korrelationskoeffizient (min KI) , Streudiagramm
+\subsection{Simplsons Paradoxon}
+\label{sub:simplsons_paradoxon}
+
+grundidee: ein effekt den ma in der gesamtgruppe sieht muss nicht ``echt'' sein, er kann in subgruppen anders ausfallen.
+\begin{beispiel}
+  % table as on paper
+\end{beispiel}
+
+
+
+
+\end{document}
