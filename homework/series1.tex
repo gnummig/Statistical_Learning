@@ -1,0 +1,147 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{xstring}
+\usepackage{amssymb} 
+\usepackage{amsmath,bbm}
+\usepackage[shortlabels]{enumitem} 
+\usepackage{private} 
+\newcommand{\RN}[1]{%
+  \textup{\uppercase\expandafter{\romannumeral#1}}%
+}
+%opening
+\title{Exercises to Statistical Learning WS 2017/18,\\
+Series 1 }
+\author{\MyDetails}
+
+\begin{document}
+
+\maketitle
+\setcounter{section}{1}
+\subsection{}
+\label{sub:one}
+
+Simplify the following expressions (from Gnedenko)!
+\begin{enumerate}[(a)]
+  \item $(A+B)(B+C)$ by commutativity:   $=(B+A)(B+C)$\\ simple application of the distributive law yields: $(A+B)(B+C)=B+(AC)$
+  \item $(A+B)(A+\overline{B}) \stackrel{distributivity}{=}A+ \underbrace{B\overline{B}}_{=\emptyset}=A$
+  \item $(A+B)(\overline{A}+B)(A+\overline{B}) = (B+A)(B+\overline{A}(A\overline{B})=(B+A\overline{A})(A \overline{B}= B(A+\overline{B})= BA +B\overline{B}=AB$
+\end{enumerate}
+%it is generally a good idea to draw venn diagrams to visualize the problem.
+\subsection{}
+\label{sub:two}
+determine the probabilities of getting the following results when tossing a coin 7 times.
+\begin{enumerate}[(a)]
+  \item ZWZZWWZ, this sequence is uniquely so it is the probability of tossing 7 times the right thing, hence $\frac{1}{2^7}$
+  \item the probability of tossing 4 heads is given by $ \binom{7}{4}\left( \frac{1}{2} \right)^7$ which results in $ \frac{35}{128}$
+  \item the probability of tossing at least four times head, is the same probability as that of tossing at least four tails, therefore it is $ \frac{1}{2}$
+\end{enumerate}
+\subsection{Bayes' formula}
+\label{sub:three}
+Lets first establish some identities:\\
+From the formula for conditional probability
+\begin{equation}
+  P(A_i|B)=\frac{P(A_iB)}{P(B)}
+\end{equation}
+we solve for $P(A_iB)$
+\begin{equation}
+  P(BA_i)=P(A_i|B)P(B)=P(A_iB)=P(B|A_i)P(A_i)
+\end{equation}
+further for
+\begin{equation*}
+  \bigcup A_i=\Omega  
+\end{equation*}
+ and
+ \begin{equation*}
+ A_i\cap A_j= \emptyset,\quad \forall i\neq j  
+ \end{equation*}
+ we can expand $P(B)$ to $P(\Omega |B)P(B)$, since $P(\Omega |X)=1$ for $X\neq \emptyset$ ie:
+\begin{equation}
+  P(B)= \underbrace{  \sum_{j}P(A_j|B)}_{=1} P(B) \stackrel{(2)}{= }  \sum_{j} P(B|A_j)P(A_j)
+\end{equation}
+it is left to substitute the respective terms  of (2) and (3)  in equation (1) 
+\begin{equation}
+  P(A_i|B)= \frac{P(B|A_i)P(A_j)}{\sum_{i} P(B|A_j)P(A_j)}
+\end{equation}
+
+\subsection{}
+\label{sub:sdf}
+We have the sensitivity $P(T^+|D^+)=0.98$ specificity $P(T^-|D^-)=0.98$ and the prevalence $P(D^+)=0.01$ given.\\
+It is further straightforward to calculate the opposites $P(D^-)=1-P(D^+)=0.99$ and $P(T^+|D^-)=1-P(T^⁻|D^-)=0.02$
+\begin{enumerate}[(a)]
+  \item the PPV is 
+    \begin{equation}
+      P(D^+|T^+)= \frac{P(T^+|D^+)P(D^+)}{P(T^+|D^+)P(D^+)+P(T^+|D^-)P(D^-)}
+    \end{equation}
+    \begin{equation*}
+      = \frac{0.98\times 0.01}{0.98\times 0.01+ 0.02\times 0.99}\approx 0.33
+    \end{equation*}
+  \item we have to take the PPV of the first test as the Prevalence of the second test, since of all persons with a positive first test 0.33\% have a sick fetus, thus 
+
+   \begin{equation*}
+     P(D^+|(T^+)^2)= \frac{0.98\times 0.33 }{0.98\times 0.33 +0.2\times 0.67}=0.96
+   \end{equation*}
+   of course this only works if the tests are completely uncorrelatet.
+\end{enumerate}
+
+\subsection{Variance of the binomial distribution}
+\label{sub:variance_of_the_binomial_distribution}
+recapitulate:\\
+The probability function of the binomial distriibution is given by :
+\begin{equation*}
+  p_n(k)=\binom{n}{k}p^k(1-p)^{n-k}
+\end{equation*}
+and the  expectation value is  $E(X)=\sum k \binom{n}{k}p^k(1-p)^{n-k}=np$\\
+For the Variance we are looking for the expectation value of
+\begin{equation*}
+  (X-E(X))^2= (k-np)^2= k^2-2knp +n^2p^2
+\end{equation*}
+The  Variance is found as:
+\begin{equation}
+  \begin{split}
+  V(X)&= \sum_{k} (k^2-2knp+n^2p^2) \binom{n}{k}p^k(1-p)^{n-k}\\
+  &= \sum k^2 \binom{n}{k}p^k(1-p)^{n-k} + 2np\underbrace{   \sum k\binom{n}{k}p^k(1-p)^{n-k}}_{= E(X)=np}+ n^2p^2\underbrace{ \sum \binom{n}{k}p^k(1-p)^{n-k}}_{=1}\\
+  &=  n^2p^2 -2n^2p^2 +  \underbrace{\sum k \binom{n}{k}p^k(1-p)^{n-k}}_{=E(X)=np} +\sum k(k-1)\binom{n}{k}p^{k}(1-p)^{n-k}\\
+  &=  - n^2p^2 + np + n(n-1)p^2 \sum \binom{n-2}{k-2}p^{k-2}(1-p)^{n-k}\\
+  &\textrm{change of variables } k'=k-2, \quad n'=n-2\\
+  &=  - n^2p^2 +np + n(n-1)p^2 \underbrace{\sum \binom{n'}{k'}p^{k'}(1-p)^{n-k}}_{=1}\\
+  &= np-np^2 \\
+  &=np(1-p)
+  \end{split}
+\end{equation}
+\subsection{Variance of the Normal distribution}
+\label{sub:variance_of_the_normal_distribution}
+The probability density of the normal distribution is given by 
+\begin{equation*}
+  \frac{1}{\sigma \sqrt{2\pi}} \exp(-\frac{(x-a)^2}{2\sigma ^2})
+\end{equation*}
+the expectation value is $E(X)=a$\\
+The variance is:
+\begin{equation}
+  V(X)\frac{1}{\sigma \sqrt{2\pi}}\int_{-\infty}^{\infty}(x-a)^2 \exp(-\frac{(x-a)^2}{2\sigma ^2})
+\end{equation}
+we substitute
+    $y=\frac{x-a}{\sigma }$    thus:
+    \begin{equation}
+      x=\sigma y+a , \quad dx=\sigma dy
+    \end{equation}
+
+\begin{equation}
+V(X)=\frac{\sigma }{ \sqrt{2\pi}}   \int_{-\infty}^{\infty}y^2 e^{-\frac{y^2}{2}}\sigma dy
+\end{equation}
+This can be solved by partial integration ie by using the fact that:
+\begin{equation*}
+  uv'= (uv)' -u'v
+\end{equation*}
+we identify $ y e^{-\frac{y^2}{2}}$ as being more easily integrable, so we write:
+\begin{equation*}
+  \int_{-\infty}^{\infty} y\left( ye^{-\frac{y^2}{2}} \right)dy=\underbrace{\left[ y( -e^{-\frac{y^2}{2}})\right]_{-\infty}^{\infty}}_{\textrm{odd thus =0 }} \underbrace{-\int_{-\infty}^{\infty}-e^{-\frac{y^2}{2}}dy}_{=\sqrt{2\pi}} 
+\end{equation*}
+Thus the variance of the normal function is simply $\sigma^2 $ which isn't just a fancy coincidence.
+
+
+
+
+
+
+
+
+\end{document}

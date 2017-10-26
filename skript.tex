@@ -169,7 +169,7 @@ Seien $A_1,A_2,\dots,A_n$ unvereinbar, So kann man die bedingte Wahrscheinlichke
 \begin{equation}
   P(A_i|B)=\frac{P(B|A_i)P(A_i)}{\sum_{j=1}^n P(B|A_j)P(A_j)}
 \end{equation} 
-mit $ \bigcup B_i=\Omega $
+mit $ \bigcup A_i=\Omega $
 \textit{(das wurde nachträglich eingefügt)}
 
 %ssub 1.2.6 
@@ -179,7 +179,12 @@ mit $ \bigcup B_i=\Omega $
 Es seien $D^+,D^-$ zwei Mögliche Krankheitszustände (Diseases, wobei krank $D^+$ ist) und $T^+,T^-$ 
 die zwei moglichen Ergebnisse eines diagnostischen Tests 
 (bei Tests wie einem Schwangerschaftsstest macht Binarität Sinn, bei Tests wie dem von Leberwerten, ist die Binariät(ob sinnvoll oder nicht ), durch eine Grenzziehung hergestellt.) 
-So bezeichnet man $P(D^+)$ als die Prävalenz (Wahrscheinlichhkeit krank zu sein), $P(T^+|D^+)$ die Sensitivität, sowie $P(T^-|D^-)$ als die Spezifität. $P(D^+|T^+)$ heißt der Positiv predictive value (PPV) also die Wahrscheinlichkeit das der Patient krank ist wenn der test positiv ausfällt, sowie $P(D^-|T^-)$ der negativ prediktiver wert (NPV), also die Wahrscheinlichhkeit, dass ein negativer Test tatsächlich bedeutet, dass der Patient gesund ist.\\
+So bezeichnet man \\
+$P(D^+)$ als die \textbf{Prävalenz} (Wahrscheinlichhkeit krank zu sein),\\
+$P(T^+|D^+)$ die \textbf{Sensitivität}, sowie\\
+$P(T^-|D^-)$ als die \textbf{Spezifität}.\\
+$P(D^+|T^+)$ heißt der \textbf{positiv pediktiver Wert} (PPV) also die Wahrscheinlichkeit das der Patient krank ist wenn der test positiv ausfällt, sowie\\
+$P(D^-|T^-)$ der \textbf{negativ prediktiver Wert} (NPV), also die Wahrscheinlichhkeit, dass ein negativer Test tatsächlich bedeutet, dass der Patient gesund ist.\\
   \subsection{Zufallsvariablen und Verteilungsfunktionen} % 1.3
 \label{sub:subsection_name}
 
@@ -247,8 +252,12 @@ F(x)=\Phi (x)=\frac{1}{\sigma \sqrt{2\pi}} \int_{-\infty}{x}e^{\frac{-(z-a)^2}{2
     \begin{equation*}
     E(X)=  \sum_{k=0}^{n}kP_n(k)=\sum k \binom{n}{k}p^k(1-p)^{n-k}
     \end{equation*}
-(nebenrechnung missing)\\
+    Nebenrechnung:
 \begin{equation*}
+  k\binom{n}{k}= \frac{kn!}{k!(n-k)!}=\frac{n(n-1)!}{(k-1)!(( n-1)-(k-1))!}=n\binom{n-1}{k-1}
+\end{equation*}
+Deshalb:
+    \begin{equation*}
 E(x)=n\sum_{k=1}^n \binom {n-1}{k-1}p^k(1-p)^{n-k}=np\sum_{k=i}^n p^{k-1}(1-p)^{n-k}
 \end{equation*}
   neue indizes: $k'=k-1,\quad n=n-1$\\
@@ -312,7 +321,7 @@ E(x)=n\sum_{k=1}^n \binom {n-1}{k-1}p^k(1-p)^{n-k}=np\sum_{k=i}^n p^{k-1}(1-p)^{
 % repetition of last seminar:
   \subsection*{repetition of last class:}
   \label{sub:repetition}
-  
+  somehow cryptic, there might be something missing\dots
  \begin{equation}
    iP_n(i)=npP_{n'}(i')
  \end{equation}
@@ -341,21 +350,25 @@ E(x)=n\sum_{k=1}^n \binom {n-1}{k-1}p^k(1-p)^{n-k}=np\sum_{k=i}^n p^{k-1}(1-p)^{
    \end{equation}
 
  \end{beispiel} 
-\begin{equation}
-  V(X)=\int\left[ x-E(X) \right]^2p(x)dx
-\end{equation}  
+%\begin{equation}
+%  V(X)=\int\left[ x-E(X) \right]^2p(x)dx
+%\end{equation}  
   \begin{beispiel}
     Uniformfverteilung $[a,b]$\\
     \begin{multline}
-V(X)= \frac{1}{b-a}\int_{a}^{b}x^2dx-\left( \frac{b+a)}{2} \right)^2 =\\
+V(X)= \frac{1}{b-a}\int_{a}^{b}x^2dx-\left( \frac{(b+a)}{2} \right)^2 =\\
 \frac{b^3-a^3}{3(b-a)}-\frac{(b+y)^2}{4}=\\
 \frac{(b-a)(b^2+a^2+ab)}{3(b-a)}-\frac{(b-a)^2}{4}
     \end{multline}
   \begin{equation}
-  = \frac{1}{12}(4b^2+4a^2+4ab-4b^2-6ab-3a^2)= \frac{1}{12}(b^2+a^2-2ab)=\frac{b-a)^2}{12}
+  = \frac{1}{12}(4b^2+4a^2+4ab-4b^2-6ab-3a^2)= \frac{1}{12}(b^2+a^2-2ab)=\frac{(b-a)^2}{12}
   \end{equation}
   \end{beispiel}
-  wir bezeichnen $m_k$ als das gewöhnliche Moment (oder auch Anfangsmoment) k-ter Ordnung
+ \subsubsection{Gewöhnliches  Moment}
+ \label{ssub:weitere_momente}
+ 
+ 
+  Wir bezeichnen $m_k$ als das gewöhnliche Moment (oder auch Anfangsmoment) k-ter Ordnung
   \begin{equation}
     m_k:= E(X^k) \quad \textrm{ diskret also } \sum_{i}(x_i)^kp_i \quad \textrm{ und stetig: } \int x^k p(x)dx
   \end{equation}
@@ -372,7 +385,7 @@ man kann immer $\mu_k$ durch $m_l\quad (l\leq k)$ ausdrücken
 \subsection{1.6 Korrelation}
 \label{sub:1_6_korrelation}
 
-Eine Erweiterung dieser momente stellt die \textit{Kovarianz} dar:
+Eine Erweiterung dieser Momente stellt die \textit{Kovarianz} dar:
 \begin{equation}
 b(X,Y):= E\left[ \left( X-E(X) \right)\left( Y-E(Y) \right) \right]
 \end{equation}
@@ -382,8 +395,13 @@ Es gilt Offensichtlich:
   b(X,X)=V(X)
 \end{equation}
 
-Die normierte Größe $\rho (X,Y):= \rho _{X,Y}=\frac{b(X,Y)}{\sqrt{V(X)V(Y)}}$ bezeichnet man als Korrelationskoefffizient. Es gilt:
-$ -1\leq\rho \leq 1$. Für $X=Y$ gilt $\rho =1$ und für $X=-Y$ gilt $\rho =-1$. Falls $X$ und $Y$ unabhängig sind, dann gilt $\rho =0$ (aber nicht notwendigerweise umgekehrt, die abhängigkeit könnte nichtlienar sein, aber generelle unabhängige funktionen sind natürlich aud linear unabhängig)\\
+Die normierte Größe $\rho (X,Y):= \rho _{X,Y}=\frac{b(X,Y)}{\sqrt{V(X)V(Y)}}$ bezeichnet man als Korrelationskoefffizient.\\
+Es gilt:
+$ -1\leq\rho \leq 1$.\\
+Für $X=Y$ gilt $\rho =1$ und\\
+für $X=-Y$ gilt $\rho =-1$.\\
+Falls $X$ und $Y$ unabhängig sind, dann gilt $\rho =0$\\
+(aber nicht notwendigerweise umgekehrt, die abhängigkeit könnte nichtlienar sein, aber generelle unabhängige funktionen sind natürlich aud linear unabhängig)\\
 \paragraph{Anwendung auf Wahrscheinlichkeiten}
 \label{par:anwendung_auf_wahrscheinlichkeiten}
 \begin{equation}
@@ -393,16 +411,15 @@ $ -1\leq\rho \leq 1$. Für $X=Y$ gilt $\rho =1$ und für $X=-Y$ gilt $\rho =-1$.
   V(X)= p_x(1-p_x)
 \end{equation}
  \begin{equation}
-   \rho_{x,y}=\frac{p_{X,Y}-p_xp_y}{denom\sqrt{p_x(1-p_x)+p_x(111-p(y)}}
+   \rho_{x,y}=\frac{p_{x,y}-p_xp_y}{\sqrt{p_x(1-p_x)+p_x(1-p_y)}}
  \end{equation}
-$\Rightarrow$
 \begin{equation}
-  p_{XY}=p_xP_y+\rho _{X,Y}\sqrt{p_x(1-p_x)p_y(1-p_y)}
+  \Rightarrow\quad p_{xy}=p_xp_y+\rho _{x,y}\sqrt{p_x(1-p_x)p_y(1-p_y)}
 \end{equation}
 grenzfälle:
-$\rho =0$: $ p_{XY)}=P_xP_Y$\\ 
-$\rho =1$: dann $p_{XY}=(p-x^2+p_x(1-p_x)=p_x$\\
-  $  \rho =-1\quad (p_X=1-P_Y) \Rightarrow P_{XY}=P_x(1-p_x)-p_x(1-p_X)=0$
+$\rho =0$: $ p_{xy}=p_xp_y$\\ 
+$\rho =1$: dann $p_{xy}=(p-x^2+p_x(1-p_x)=p_x$\\
+  $  \rho =-1\quad (p_x=1-p_y) \Rightarrow p_{xy}=P_x(1-p_x)-p_x(1-p_x)=0$
   \subsection{1.7 Einige Wichtige Sätze der Wahrscheinlichkeitstheoorie}
  \label{sub:1_7_einige_wichtige_satze_der_wahrscheinlichkeitstheoorie}
  
@@ -413,22 +430,18 @@ Bernoulli: Für alle $\epsilon > 0 $
 \begin{equation}
   \lim_{n \rightarrow \infty}P\left\{|\frac{\mu}{n}-p|<\epsilon \right\}=1
 \end{equation}
- wobei $\mu$ anzahl der ereignisse, $n$ anzahl der Versuche, p Wahrscheinlichkeit des Ereignisse\\
- (streng mathematisch ist das nicht korrekt sondern bedarf erst noch einem bewies den borel wesentlich später gemacht hat, siehe literatur)\\
+ Wobei $\mu$ Anzahl der Ereignisse, $n$ Anzahl der Versuche, p Wahrscheinlichkeit des Ereignisse\\
+ (streng mathematisch ist das nicht korrekt sondern bedarf erst noch einem Beweis den Borel wesentlich später gemacht hat, siehe Literatur)\\
  Tschepyschew:\\
- (man kennt ihn in der informatik von den Tschebischew polynomen)\\
+ (man kennt ihn in der Informatik wegen der Tschebischew polynome)\\
 für alle $\epsilon >0$ 
 \begin{equation}
-  \lim_{n\rightarrow \infty}P\left\{ |\frac{1}{n}\sum_{i=1}^{n}X_i-\frac{1}{n}\sum_{i=1}^{n}E(X_i)|<\epsilon e \right\}=1
+  \lim_{n\rightarrow \infty}P\left\{ |\frac{1}{n}\sum_{i=1}^{n}X_i-\frac{1}{n}\sum_{i=1}^{n}E(X_i)|<\epsilon  \right\}=1
 \end{equation}
 für eine Folge paarweise verschiedener unabhängiger Zufallsgrößen
-\begin{equation}
-  \left\{ X_i \right\}_{i=1,2,\dots,n}
-\end{equation}
+  $\left\{ X_i \right\}_{i=1,2,\dots,n}$
 mit gleichmäßig beschränkter varianz:
-\begin{equation}
-  \forall i \quad V(X_i)\leq C
-\end{equation}
+ $ \forall i \quad V(X_i)\leq C$
 % man betrachtet einen fall binärer einstufung zum beispiel qualität in einer fabrik, \dots wenn es um das praktische geht muss man sich fragen ob die vorraussetzungen gegeben sind
 % frage nach in welchem fall man frequentistisch (auch mathematisch bewiesen ) arbeitenn darf, sprich mittelwerte verwneden darf. historischer versuch:  sehr verdünntes gas, wenn man nicht frequentistisch sollte man keinen kontinuirlichen druck sehen, sondern viele kleine stöße, das wurde lange nicht geglaubt, ist aber tatsächlich so, aber man braucht eben ein sehr verdünntes glas
 \subsubsection{Lokaler Grenzwert von Movre Laplace}
@@ -446,24 +459,24 @@ man normiert die binomialverteilung und im grenzfall wird sie zutt normalverteil
 Sei $ S_n =\sum_{i=1}^{n}X_i$ mit $ E(X_i)< \infty$, $V(X_i)=\sigma ^2 \leq \infty$\\
 so gilt für jedes t 
 \begin{equation}
-  \lim_{n\rightarrow \infty}P(\frac{S_n-nE(X_i)}{\sqrt{\pi}\sigma }<t)= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^t e^{-\frac{x^2}{2}}dx
+\lim_{n\rightarrow \infty}P\left(\frac{S_n-nE(X_i)}{\sqrt{\pi}\sigma }<t  \right)= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^t e^{-\frac{x^2}{2}}dx
 \end{equation}
 also die folge der verteilung der standartisierten zufallsgrößen konvergiert gegen die Standartnormalverteilung, das heißt a=0, $\sigma =1$ 
 
 \section{Deskriptive Statistik}
 \label{sec:deskriptive_statistik}
-Eine Beschreibung vun daten und Kohorten ist zentral für das Verstäändniss ener Arbeit (Veröffentlichung)\\
+Eine Beschreibung von Daten und Kohorten ist zentral für das Verständnis einer Arbeit (Veröffentlichung)\\
 % bem: man probiert etwas an einer bestimmten gruppe von patienten und möchte das ergebnis verallgeinern. es kann aber passieren das man merkt oder sich fragt ob das ergebnis tatsächlich übertragbar. beispiel: arbeit eingereicht, danach kam eine sehr renommierte arbeit, die bessere ergebnisse hatte aber auch eine höhere mortalität woraus sich die höheren werte ergeben könten, also die ergebnisse der eigenen nd der anderen ncht unbedingt vergleichbar sind.
-Ziel ist es it wenigen Kenngrößen ddas wesentliche zu charactersisieren.\\
-dazu gibt es 'punktschötzer' für erwartungswerte und Konfidenzintervalle(KI engl. CI) als maß für die genauigkeit der Schätzung.\\
+Ziel ist es mit wenigen Kenngrößen das Wesentliche zu charactersisieren.\\
+dazu gibt es 'punktschätzer' für Erwartungswerte und Konfidenzintervalle (KI engl. CI) als Maß für die Genauigkeit der Schätzung.\\
 was ist ein konfidenzintervall\:
 \begin{equation}
   (1-\alpha )\quad KI[a,b]: \quad P(a\leq\Theta\leq b = 1-\alpha 
 \end{equation}
-man will schätzen wie wahrscheinlichkeit eines erwartungswertes ist.
-\begin{beispiel}
-  wir messen die (menge) von haemoglobin bei 1 Mio menschen. dann gehe ich zum gefrierschrank und wähle 100 proben und ich messen einen wert der etwas anders ist als der bei den 1Mio, gebe eine konfidenzintervall von der zweiten messung an und mache das mit noch mehr proben , dann liegt manchmal das konfidenzmaß nicht über dem erwaartungswert.
-\end{beispiel}
+Man will schätzen wie Wahrscheinlichkeit eines Erwartungswertes ist.
+%\begin{beispiel}
+%  wir messen die (menge) von haemoglobin bei 1 Mio menschen. dann gehe ich zum gefrierschrank und wähle 100 proben und ich messen einen wert der etwas anders ist als der bei den 1Mio, gebe eine konfidenzintervall von der zweiten messung an und mache das mit noch mehr proben , dann liegt manchmal das konfidenzmaß nicht über dem erwaartungswert.
+%\end{beispiel}
 \subsection{Ein Merkmal}
 \label{sub:ein_merkmal}
 
